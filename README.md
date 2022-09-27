@@ -1,6 +1,9 @@
 # Colorization CoreML
 Repository for image colorization using CoreML
 
+![res1](results/res1.png)
+![res2](results/res2.png)
+
 ## Installation
 
 1. Install all requirements:
@@ -18,12 +21,16 @@ python run_colorization.py --data-root images
 
 If image is not black & white it will be converter to b&w and then colorized
 
-## Model
+## Models
 
-Model input is Black&White PIL.Image of any shape. Model output is Float32
-array of shape (3, H, W).
+First model [colorizer_core.mlmodel](weights/colorizer_core.mlmodel) expects PIL.Image
+`image_small` of size (3, 256, 256). It returns `result`, A and B from LAB colorspace as array, (2, 256, 256).
 
-Input node name is `image`, output - `result`.
+Then you need to resize `result` to original image size. Let's name resized `result` as `ab`
+
+Second model [colorizer_tail.mlmodel](weights/colorizer_tail.mlmodel). It expects original PIL.Image
+of any size, `image`. And `ab`, resized `result` from previous network. This model returns
+colorized image array `colorized_image` of original size.
 
 ## Built With
 
