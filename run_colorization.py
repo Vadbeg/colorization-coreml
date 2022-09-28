@@ -56,21 +56,29 @@ def run_enlighten(
         image = _load_image(image_path=curr_image_path)
         image_resized = image.resize((256, 256))
 
-        ab = core_model.predict(data={'image_small': image_resized})['result']
-
-        original_height, original_width = image.size
-
-        ab_resized = _resize_ab(
-            ab=ab,
-            original_height=original_height,
-            original_width=original_width,
+        colorized_small_image_array = core_model.predict(
+            data={'image_small': image_resized}
+        )['colorized_small_image']
+        colorized_small_image_array = np.uint8(colorized_small_image_array)[0]
+        colorized_small_image_array = np.transpose(
+            colorized_small_image_array, axes=(1, 2, 0)
         )
 
-        colorized_image = tail_model.predict(data={'image': image, 'ab': ab_resized})[
-            'colorized_image'
-        ][0]
+        colorized_small_image = Image.fromarray(colorized_small_image_array)
+        original_height, original_width = image.size
+        colorized_small_image = colorized_small_image.resize(
+            size=(original_height, original_width)
+        )
+
+        colorized_image = tail_model.predict(
+            data={'image': image, 'colorized_small_image': colorized_small_image}
+        )['colorized_image'][0]
+
         colorized_image = np.transpose(colorized_image, axes=(1, 2, 0))
         colorized_image = np.uint8(colorized_image)
+
+        cv2.imwrite('res.jpg', cv2.cvtColor(colorized_image, cv2.COLOR_RGB2BGR))
+        cv2.imwrite('orig.jpg', np.array(image))
 
         fig, axs = plt.subplots(1, 2, figsize=(12, 8))
         axs = axs.flatten()
