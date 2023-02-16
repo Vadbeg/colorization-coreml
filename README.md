@@ -1,5 +1,7 @@
 # Colorization CoreML
-Repository for image colorization using CoreML
+Repository for image colorization using CoreML.
+Model is based on [Colorful Image Colorization](https://arxiv.org/abs/1603.08511)
+paper and original GitHub [repository](https://github.com/richzhang/colorization).
 
 ![res1](results/res1.png)
 ![res2](results/res2.png)
@@ -19,7 +21,8 @@ To run use command below:
 python run_colorization.py --data-root images
 ```
 
-If image is not black & white it will be converter to b&w and then colorized
+If image is not black & white it will be converter to b&w and then colorized.
+Model inference will work only on MacOS because of coremltools framework.
 
 ## Models
 
