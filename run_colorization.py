@@ -12,7 +12,7 @@ from PIL import Image
 
 def _load_image(image_path: Path) -> Image.Image:
     image: Image.Image = Image.open(image_path)
-    image = image.convert(mode='RGB')
+    image = image.convert(mode="RGB")
 
     return image
 
@@ -31,15 +31,15 @@ def _resize_ab(ab: np.ndarray, original_height: int, original_width: int) -> np.
 
 def run_enlighten(
     data_root: Path = typer.Option(
-        default=..., help='Path to folder with *.jpg images'
+        default=..., help="Path to folder with *.jpg images"
     ),
     core_model_path: Path = typer.Option(
-        default=Path('weights/colorizer_core.mlmodel'),
-        help='Path to core colorization CoreML model',
+        default=Path("weights/colorizer_core.mlmodel"),
+        help="Path to core colorization CoreML model",
     ),
     tail_model_path: Path = typer.Option(
-        default=Path('weights/colorizer_tail.mlmodel'),
-        help='Path to tail colorization CoreML model',
+        default=Path("weights/colorizer_tail.mlmodel"),
+        help="Path to tail colorization CoreML model",
     ),
 ) -> None:
     """
@@ -49,17 +49,18 @@ def run_enlighten(
     core_model = ct.models.MLModel(str(core_model_path))
     tail_model = ct.models.MLModel(str(tail_model_path))
 
-    image_paths = list(data_root.glob(pattern='**/*.jpg'))
-    image_paths += list(data_root.glob(pattern='**/*.png'))
+    image_paths = list(data_root.glob(pattern="**/*.jpg"))
+    image_paths += list(data_root.glob(pattern="**/*.png"))
 
     for curr_image_path in image_paths:
         image = _load_image(image_path=curr_image_path)
         image_resized = image.resize((256, 256))
 
         colorized_small_image_array = core_model.predict(
-            data={'image_small': image_resized}
-        )['colorized_small_image']
-        colorized_small_image_array = np.uint8(colorized_small_image_array)[0]
+            data={"image_small": image_resized}
+        )["colorized_small_image"]
+        colorized_small_image_array = colorized_small_image_array[0]
+        colorized_small_image_array = colorized_small_image_array.astype(np.uint8)
         colorized_small_image_array = np.transpose(
             colorized_small_image_array, axes=(1, 2, 0)
         )
@@ -71,22 +72,19 @@ def run_enlighten(
         )
 
         colorized_image = tail_model.predict(
-            data={'image': image, 'colorized_small_image': colorized_small_image}
-        )['colorized_image'][0]
+            data={"image": image, "colorized_small_image": colorized_small_image}
+        )["colorized_image"][0]
 
         colorized_image = np.transpose(colorized_image, axes=(1, 2, 0))
         colorized_image = np.uint8(colorized_image)
 
-        cv2.imwrite('res.jpg', cv2.cvtColor(colorized_image, cv2.COLOR_RGB2BGR))
-        cv2.imwrite('orig.jpg', np.array(image))
-
         fig, axs = plt.subplots(1, 2, figsize=(12, 8))
         axs = axs.flatten()
 
-        axs[0].set_title('Original image')
+        axs[0].set_title("Original image")
         axs[0].imshow(np.array(image))
 
-        axs[1].set_title('Colorized image')
+        axs[1].set_title("Colorized image")
         axs[1].imshow(colorized_image)
 
         plt.show()
