@@ -53,5 +53,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Authors
 
 * **Vadim Titko** aka *Vadbeg* -
-[LinkedIn](https://www.linkedin.com/in/vadtitko/) |
-[GitHub](https://github.com/Vadbeg/PythonHomework/commits?author=Vadbeg)
+[LinkedIn](https://www.linkedin.com/in/vadtitko) |
+[GitHub](https://github.com/Vadbeg)
