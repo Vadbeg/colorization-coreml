@@ -42,6 +42,8 @@ This model returns an array containing the colorized image, `colorized_image`, o
 
 * [coremltools](https://github.com/apple/coremltools) - The NNs inference framework used
 * [OpenCV](https://opencv.org/) - Images processing framework used
+* [Pillow](https://pillow.readthedocs.io/) - Images processing framework used
+* [Typer](https://typer.tiangolo.com/) - CLI framework used
 
 ## Authors
 
