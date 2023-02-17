@@ -1,7 +1,9 @@
 # Colorization CoreML
-Repository for image colorization using CoreML.
-Model is based on [Colorful Image Colorization](https://arxiv.org/abs/1603.08511)
-paper and original GitHub [repository](https://github.com/richzhang/colorization).
+
+This is a repository for image colorization using CoreML.
+The model is based on the [Colorful Image Colorization](https://arxiv.org/abs/1603.08511) paper and
+the original GitHub [repository](https://github.com/richzhang/colorization).
+The model used in this repository is named `siggraph17`.
 
 ![res1](results/res1.png)
 ![res2](results/res2.png)
@@ -21,19 +23,20 @@ To run use command below:
 python run_colorization.py --data-root images
 ```
 
-If image is not black & white it will be converter to b&w and then colorized.
-Model inference will work only on MacOS because of coremltools framework.
-
+If an image is not in black and white, it will be converted to black and white before colorization.
+It's worth noting that the model inference will only work on MacOS due to restrictions of the coremltools framework.
 ## Models
 
-First model [colorizer_core.mlmodel](weights/colorizer_core.mlmodel) expects PIL.Image
-`image_small` of size (3, 256, 256). It returns `result`, A and B from LAB colorspace as array, (2, 256, 256).
+The first model, [colorizer_core.mlmodel](weights/colorizer_core.mlmodel), expects a PIL.Image named `image_small`
+with a size of (3, 256, 256).
+It returns an array containing `colorized_small_image`, an A and B values from the LAB color space (2, 256, 256).
 
-Then you need to resize `result` to original image size. Let's name resized `result` as `ab`
+Afterward, you need to resize `colorized_small_image` to the original image size, convert this array to PIL.Image.
+Let's name the result `ab`.
 
-Second model [colorizer_tail.mlmodel](weights/colorizer_tail.mlmodel). It expects original PIL.Image
-of any size, `image`. And `ab`, resized `result` from previous network. This model returns
-colorized image array `colorized_image` of original size.
+The second model, [colorizer_tail.mlmodel](weights/colorizer_tail.mlmodel), requires the original PIL.Image,
+`image`, of any size, as well as the `ab` (i.e., the resized `colorized_small_image` from the previous model).
+This model returns an array containing the colorized image, `colorized_image`, of the original size.
 
 ## Built With
 

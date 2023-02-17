@@ -72,7 +72,7 @@ def run_enlighten(
         )
 
         colorized_image = tail_model.predict(
-            data={"image": image, "colorized_small_image": colorized_small_image}
+            data={"image": image, "ab": colorized_small_image}
         )["colorized_image"][0]
 
         colorized_image = np.transpose(colorized_image, axes=(1, 2, 0))
