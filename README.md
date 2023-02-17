@@ -45,6 +45,11 @@ This model returns an array containing the colorized image, `colorized_image`, o
 * [Pillow](https://pillow.readthedocs.io/) - Images processing framework used
 * [Typer](https://typer.tiangolo.com/) - CLI framework used
 
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
 ## Authors
 
 * **Vadim Titko** aka *Vadbeg* -
