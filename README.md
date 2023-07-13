@@ -10,11 +10,15 @@ The model used in this repository is named `siggraph17`.
 
 ## Installation
 
-1. Install all requirements:
+1. Create a virtual environment:
+```shell
+virtualenv -p python3.9 .venv && source .venv/bin/activate
+```
+2. Install all requirements:
 ```shell
 pip install -r requirements.txt
 ```
-2. Use the project :tada:
+3. Use the project :tada:
 
 ## Usage
 
